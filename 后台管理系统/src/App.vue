@@ -1,8 +1,5 @@
 <template>
   <div class="home">
-    <h2>111</h2>
-    <router-link to="/main">home</router-link>
-    <router-link to="/login">登录</router-link>
     <router-view></router-view>
   </div>
 </template>

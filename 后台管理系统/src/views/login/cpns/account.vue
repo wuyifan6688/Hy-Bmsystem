@@ -30,9 +30,11 @@ import type { IAccount } from '@/types'
 import { ref, reactive } from 'vue'
 import type { FormRules, ElForm } from 'element-plus' //elform文档没写
 import useLoginStore from '@/store/login/login'
+import { localCache } from '@/utils/cache'
+
 let account = reactive<IAccount>({
-  name: '',
-  password: ''
+  name: localCache.getCache('name') ?? '',
+  password: localCache.getCache('password') ?? ''
 })
 let formRef = ref<InstanceType<typeof ElForm>>()
 const accountRules = reactive<FormRules>({
@@ -55,13 +57,20 @@ const accountRules = reactive<FormRules>({
 })
 
 const loginStore = useLoginStore()
-function loginAction() {
+function loginAction(checked: boolean) {
   formRef.value?.validate((isValid) => {
     if (isValid) {
-      console.log('验证没问题')
       const name = account.name
       const password = account.password
-      loginStore.loginAccountAction({ name, password })
+      loginStore.loginAccountAction({ name, password }).then(() => {
+        if (checked) {
+          localCache.setCache('name', name)
+          localCache.setCache('password', password)
+        } else {
+          localCache.removeCache('name')
+          localCache.removeCache('password')
+        }
+      })
     }
   })
 }

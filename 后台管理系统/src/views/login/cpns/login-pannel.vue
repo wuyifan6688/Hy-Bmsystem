@@ -33,7 +33,7 @@
     <div class="setPassword">
       <div class="remember">
         <el-checkbox
-          v-model="checked1"
+          v-model="checked"
           label="Option 1"
           size="large"
           style="color: rgb(53, 133, 252)"
@@ -53,16 +53,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import accountPannel from './account.vue'
 import type { IAccount } from '@/types'
+import { localCache } from '@/utils/cache'
 
-let checked1 = ref()
+let checked = ref(localCache.getCache('checked'))
+watch(checked, (newValue: boolean) => {
+  localCache.setCache('checked', newValue)
+})
 let activeName = ref('account')
 const accountRef = ref<InstanceType<typeof accountPannel>>() //这个不是很懂
 
 function canLogin() {
-  if (activeName.value == 'account') accountRef.value?.loginAction()
+  if (activeName.value == 'account')
+    accountRef.value?.loginAction(checked.value)
 }
 </script>
 
