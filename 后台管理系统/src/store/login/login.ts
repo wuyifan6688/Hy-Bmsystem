@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { IAccount } from '@/types'
+import { mapMenuRoutes } from '@/utils/map-menu'
 import {
   accountLoginRequest,
   getUserInfoById,
@@ -37,10 +38,24 @@ const useLoginStore = defineStore('login', {
       const userMenuResult = await getUserMenuByRoleId(this.userInfo.role.id)
       this.userMenu = userMenuResult.data
 
+      // 匹配权限
+      let routes = []
+      routes = mapMenuRoutes(this.userMenu)
+      routes.forEach((item) => {
+        router.addRoute('main', item)
+      })
+
       localCache.setCache('userInfo', this.userInfo)
       localCache.setCache('userMenu', this.userMenu)
 
       router.push('/main')
+    },
+    loadLocalCacheAction() {
+      let routes = []
+      routes = mapMenuRoutes(this.userMenu)
+      routes.forEach((item) => {
+        router.addRoute('main', item)
+      })
     }
   }
 })

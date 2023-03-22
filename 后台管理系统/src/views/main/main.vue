@@ -8,7 +8,7 @@
         <el-header
           ><mainHead @foldChange="handleFoldChange"></mainHead
         ></el-header>
-        <el-main>Main</el-main>
+        <el-main><router-view></router-view></el-main>
       </el-container>
     </el-container>
     <!-- <button @click="outLogin">退出登录</button> -->
@@ -43,10 +43,10 @@ function handleFoldChange(flag: boolean) {
     }
     .el-container {
       .el-header {
-        background-color: bisque;
+        background-color: rgb(255, 255, 255);
       }
       .el-main {
-        background-color: rgb(240, 240, 174);
+        background-color: rgb(243, 241, 241);
       }
     }
   }

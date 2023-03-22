@@ -6,7 +6,7 @@
     </div>
 
     <el-menu
-      default-active="2"
+      :default-active="defaultActive"
       class="el-menu-vertical-demo"
       :collapse="menuFold"
     >
@@ -20,7 +20,10 @@
           </template>
 
           <template v-for="subitem in item.children" :key="subitem.id">
-            <el-menu-item :index="subitem.id + ''">
+            <el-menu-item
+              :index="subitem.id + ''"
+              @click="handleClick(subitem)"
+            >
               <!-- 控制台说index要为string -->
               <span class="run"> {{ subitem.name }}</span>
             </el-menu-item>
@@ -33,8 +36,10 @@
 
 <script setup lang="ts">
 import useLoginStore from '@/store/login/login'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { defineProps } from 'vue'
+import { mapActive } from '@/utils/map-menu'
 const loginStore = useLoginStore()
 const menu = loginStore.userMenu
 
@@ -43,6 +48,17 @@ defineProps({
     type: Boolean,
     default: false
   }
+})
+
+const router = useRouter()
+function handleClick(subitem: any) {
+  router.push(subitem.url)
+}
+
+const route = useRoute()
+const defaultActive = computed(() => {
+  const id = mapActive(route.path, menu)
+  return id + ''
 })
 </script>
 

@@ -1,10 +1,18 @@
 <template>
   <div class="mainHead">
-    <div class="left" @click="handleClick">
-      <el-icon size="20px"
+    <div class="left">
+      <el-icon size="20px" @click="handleClick"
         ><component :is="isFold ? 'Expand' : 'Fold'"></component
       ></el-icon>
-      <span>面包屑</span>
+      <span
+        ><el-breadcrumb separator-icon="ArrowRight">
+          <template v-for="item in arg" :key="item.name">
+            <el-breadcrumb-item :to="{ path: item.url }">{{
+              item.name
+            }}</el-breadcrumb-item></template
+          ></el-breadcrumb
+        ></span
+      >
     </div>
 
     <div class="right">
@@ -48,9 +56,12 @@
 
 <script setup lang="ts">
 import { defineEmits } from 'vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { LOGIN_TOKEN } from '@/global'
 import { localCache } from '@/utils/cache'
+import { mapName } from '@/utils/map-menu'
+import { useRoute } from 'vue-router'
+import useLoginStore from '@/store/login/login'
 import router from '@/router'
 const isFold = ref(false)
 const emit = defineEmits(['foldChange'])
@@ -62,6 +73,12 @@ function outLogin() {
   router.push('/login')
   localCache.removeCache(LOGIN_TOKEN)
 }
+
+const route = useRoute()
+const loginStore = useLoginStore()
+const arg = computed(() => {
+  return mapName(route.path, loginStore.userMenu) //以为只要放进括号里面就行了
+})
 </script>
 
 <style lang="less" scoped>
@@ -72,6 +89,7 @@ function outLogin() {
   height: 100%;
   .left {
     display: flex;
+    align-items: center;
     span {
       margin-left: 20px;
     }
