@@ -27,19 +27,19 @@ const localRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/main/system/department',
-    component: () => import('@/views/main/system/department.vue')
+    component: () => import('@/views/main/system/department/department.vue')
   },
   {
     path: '/main/system/menu',
-    component: () => import('@/views/main/system/menu.vue')
+    component: () => import('@/views/main/system/menu/menu.vue')
   },
   {
     path: '/main/system/role',
-    component: () => import('@/views/main/system/role.vue')
+    component: () => import('@/views/main/system/role/role.vue')
   },
   {
     path: '/main/system/user',
-    component: () => import('@/views/main/system/user.vue')
+    component: () => import('@/views/main/system/user/user.vue')
   }
 ]
 

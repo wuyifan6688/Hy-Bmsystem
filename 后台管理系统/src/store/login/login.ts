@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { IAccount } from '@/types'
 import { mapMenuRoutes } from '@/utils/map-menu'
+import useMainStore from '../main/main'
 import {
   accountLoginRequest,
   getUserInfoById,
@@ -48,9 +49,20 @@ const useLoginStore = defineStore('login', {
       localCache.setCache('userInfo', this.userInfo)
       localCache.setCache('userMenu', this.userMenu)
 
+      //下载用户列表和部门列表
+      const mainStore = useMainStore()
+      mainStore.togetRoleList()
+      mainStore.togetDepartment()
+
+      //转入
       router.push('/main')
     },
     loadLocalCacheAction() {
+      //挂载到app，刷新时候启用
+      const mainStore = useMainStore()
+      mainStore.togetRoleList()
+      mainStore.togetDepartment()
+
       let routes = []
       routes = mapMenuRoutes(this.userMenu)
       routes.forEach((item) => {

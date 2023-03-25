@@ -33,7 +33,7 @@
             src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         /></span>
         <el-dropdown>
-          <span class="el-dropdown-link"> curry </span>
+          <span class="el-dropdown-link" style="cursor: pointer"> curry </span>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="outLogin">

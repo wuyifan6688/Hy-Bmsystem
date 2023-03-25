@@ -1,5 +1,9 @@
 import { defineStore } from 'pinia'
-import { getUserList } from '@/service/main/system/system'
+import {
+  getUserList,
+  deleteUser,
+  createUser
+} from '@/service/main/system/system'
 
 interface list {
   id: number
@@ -22,10 +26,40 @@ const useUserStore = defineStore('user', {
     totalCount: 1
   }), //必须用括号包裹
   actions: {
-    async postUserList() {
-      const data = await getUserList()
+    async postUserList(
+      offset: number,
+      size: number,
+      name?: string,
+      realname?: string,
+      cellphone?: number,
+      enable?: number,
+
+      createAt?: string
+    ) {
+      const data = await getUserList(
+        offset,
+        size,
+        name,
+        realname,
+        cellphone,
+        enable,
+        createAt
+      )
       this.userList = data.data.list
       this.totalCount = data.data.totalCount
+    },
+    async toDeleteUser(id: number) {
+      deleteUser(id)
+    },
+    async toCreateUser(
+      name: string,
+      realname: string,
+      password: string,
+      cellphone: number,
+      departmentId: number,
+      roleId: number
+    ) {
+      createUser(name, realname, password, cellphone, departmentId, roleId)
     }
   }
 })
