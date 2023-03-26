@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import {
   getUserList,
   deleteUser,
-  createUser
+  createUser,
+  changeUser
 } from '@/service/main/system/system'
 
 interface list {
@@ -33,7 +34,6 @@ const useUserStore = defineStore('user', {
       realname?: string,
       cellphone?: number,
       enable?: number,
-
       createAt?: string
     ) {
       const data = await getUserList(
@@ -60,6 +60,17 @@ const useUserStore = defineStore('user', {
       roleId: number
     ) {
       createUser(name, realname, password, cellphone, departmentId, roleId)
+    },
+    async toChangeUser(
+      id: number,
+      name: string,
+      realname: string,
+      cellphone: number,
+      departmentId: number,
+      roleId: number
+    ) {
+      changeUser(id, name, realname, cellphone, departmentId, roleId)
+      console.log(id, name, realname, cellphone, departmentId, roleId)
     }
   }
 })

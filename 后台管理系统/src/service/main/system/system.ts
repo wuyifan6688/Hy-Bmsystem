@@ -46,3 +46,17 @@ export function createUser(
     }
   })
 }
+/////
+export function changeUser(
+  id: number,
+  name: string,
+  realname: string,
+  cellphone: number,
+  departmentId: number,
+  roleId: number
+) {
+  hyRequest.patch({
+    url: `/users/${id}`,
+    data: { name, realname, cellphone, departmentId, roleId }
+  })
+}
