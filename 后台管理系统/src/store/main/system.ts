@@ -3,7 +3,11 @@ import {
   getUserList,
   deleteUser,
   createUser,
-  changeUser
+  changeUser,
+  getPage,
+  changePage,
+  delPage,
+  createPage
 } from '@/service/main/system/system'
 
 interface list {
@@ -19,11 +23,13 @@ interface list {
 }
 interface result {
   userList: list[]
+  pageList: any[]
   totalCount: number
 }
 const useUserStore = defineStore('user', {
   state: (): result => ({
     userList: [],
+    pageList: [],
     totalCount: 1
   }), //必须用括号包裹
   actions: {
@@ -70,7 +76,27 @@ const useUserStore = defineStore('user', {
       roleId: number
     ) {
       changeUser(id, name, realname, cellphone, departmentId, roleId)
-      console.log(id, name, realname, cellphone, departmentId, roleId)
+    },
+    //封装
+    //获取
+    async toGetPage(
+      name: string,
+      offset: number,
+      size: number,
+      change: {} = {}
+    ) {
+      const data = await getPage(name, offset, size, change)
+      this.pageList = data.data!.list
+    },
+    async toDelPage(name: string, id: number) {
+      delPage(name, id)
+    },
+    async toChangePage(name: string, id: number, change: {}) {
+      changePage(name, id, change)
+      console.log(name, id, change)
+    },
+    async toCreatePage(name: string, change: {}) {
+      createPage(name, change)
     }
   }
 })

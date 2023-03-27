@@ -82,6 +82,9 @@ let show = ref(true)
 let id = ref()
 function create(state: boolean, messege: any = '') {
   dialogFormVisible.value = true
+  for (let t in form) {
+    form[t] = ''
+  }
   if (state) {
     id.value = messege.id
     show.value = false

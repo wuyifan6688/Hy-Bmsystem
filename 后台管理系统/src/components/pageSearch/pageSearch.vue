@@ -9,11 +9,22 @@
           >
             <el-col :span="8">
               <el-form-item :label="item.label" :prop="item.prop">
-                <el-input
-                  v-model="formData.name"
-                  :placeholder="item.placeholder"
-                /> </el-form-item></el-col
-          ></template>
+                <template v-if="item.type == 'input'">
+                  <el-input
+                    v-model="formData[item.prop]"
+                    :placeholder="item.placeholder"
+                /></template>
+                <template v-else>
+                  <el-date-picker
+                    v-model="formData[item.prop]"
+                    type="date"
+                    :placeholder="item.label"
+                    style="width: 100%"
+                  />
+                </template>
+              </el-form-item>
+            </el-col>
+          </template>
         </el-row>
 
         <div class="button">
@@ -34,15 +45,10 @@
 </template>
 
 <script setup lang="ts">
+import { initial } from 'lodash'
 import { reactive, ref } from 'vue'
 import { defineEmits, defineProps } from 'vue'
-const formData = reactive({
-  name: '',
-  realname: '',
-  cellphone: '',
-  enable: 1,
-  createAt: ''
-})
+
 //top
 const emit = defineEmits(['queryClick', 'resetClick'])
 function search() {
@@ -62,6 +68,11 @@ interface Iprops {
   }
 }
 const props = defineProps<Iprops>()
+let initData: any = {}
+for (let i of props.searchConfig.formItems) {
+  initData[i.prop] = i.initialValue ?? ''
+}
+const formData = reactive(initData)
 </script>
 
 <style lang="less" scoped>
