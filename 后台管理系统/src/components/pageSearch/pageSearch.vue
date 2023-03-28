@@ -14,7 +14,10 @@
                     v-model="formData[item.prop]"
                     :placeholder="item.placeholder"
                 /></template>
-                <template v-else>
+                <template v-if="item.type == 'custom'" #default="scope">
+                  <slot :name="item.slotName" v-bind="scope"></slot>
+                </template>
+                <template v-if="item.type == 'date-picker'">
                   <el-date-picker
                     v-model="formData[item.prop]"
                     type="date"
@@ -53,6 +56,7 @@ import { defineEmits, defineProps } from 'vue'
 const emit = defineEmits(['queryClick', 'resetClick'])
 function search() {
   emit('queryClick', formData)
+  console.log(44, formData)
 }
 const formRef = ref()
 function disapper() {

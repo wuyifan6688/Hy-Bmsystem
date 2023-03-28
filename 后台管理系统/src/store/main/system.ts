@@ -86,14 +86,14 @@ const useUserStore = defineStore('user', {
       change: {} = {}
     ) {
       const data = await getPage(name, offset, size, change)
-      this.pageList = data.data!.list
+      this.pageList = data.data.list
+      console.log(11, change)
     },
     async toDelPage(name: string, id: number) {
       delPage(name, id)
     },
     async toChangePage(name: string, id: number, change: {}) {
       changePage(name, id, change)
-      console.log(name, id, change)
     },
     async toCreatePage(name: string, change: {}) {
       createPage(name, change)

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getRoleList, getDepartment } from '@/service/main/main'
+import { getRoleList, getDepartment, getMenuList } from '@/service/main/main'
 interface departmentList {
   id: number
   name: string
@@ -19,11 +19,13 @@ interface roleList {
 interface result {
   department: departmentList[]
   role: roleList[]
+  menu: []
 }
 const useMainStore = defineStore('main', {
   state: (): result => ({
     department: [],
-    role: []
+    role: [],
+    menu: []
   }),
   actions: {
     async togetRoleList() {
@@ -34,6 +36,10 @@ const useMainStore = defineStore('main', {
       const data = await getDepartment()
 
       this.department = data.data.list
+    },
+    async togetMenuList() {
+      const data = await getMenuList()
+      this.menu = data.data.list
     }
   }
 })

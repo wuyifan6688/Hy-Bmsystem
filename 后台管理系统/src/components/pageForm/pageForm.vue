@@ -20,7 +20,10 @@
                 </template>
               </el-select>
             </template>
-            <template v-else>
+            <template v-if="item.type == 'custom'" #default="scope">
+              <slot :name="item.slotName" v-bind="scope"></slot
+            ></template>
+            <template v-if="item.type == 'input'">
               <el-input
                 :type="item.type"
                 v-model="form[item.prop]"
@@ -60,6 +63,7 @@ interface Itype {
     }
     formItems: any[]
   }
+  otherConfig?: any
 }
 const props = defineProps<Itype>()
 
@@ -100,7 +104,9 @@ const emit = defineEmits(['newMust'])
 const userStore = useUserStore()
 function confirm() {
   dialogFormVisible.value = false
-
+  if (props.otherConfig) {
+    form = { ...form, ...props.otherConfig }
+  }
   if (show.value) {
     userStore.toCreatePage(props.formConfig.pageName, form)
     emit('newMust')

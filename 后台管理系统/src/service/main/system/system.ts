@@ -65,9 +65,16 @@ export function getPage(
   name: string,
   offset: number,
   size: number,
-  change: {} = {}
+  change: any = {}
 ) {
-  const data = { offset, size, ...change }
+  // wyf..这一段十分重要，因为传入的change对应的属性可能没有值，所以需要通过这种方式把没有值的属性删除
+  const result: any = {}
+  for (const t in change) {
+    if (change[t] !== '') result[t] = change[t]
+  }
+  const data = { offset, size, ...result }
+  // ..
+  console.log(66, result)
   return hyRequest.post({
     url: `/${name}/list`,
     data
@@ -85,6 +92,7 @@ export function changePage(name: string, id: number, change: {}) {
   })
 }
 export function createPage(name: string, change: {}) {
+  console.log(change)
   return hyRequest.post({
     url: `/${name}`,
     data: { ...change }

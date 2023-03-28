@@ -28,15 +28,13 @@
 import pageSearch from '@/components/pageSearch/pageSearch.vue'
 import pageForm from '@/components/pageForm/pageForm.vue'
 import pageContent from '@/components/pageContent/pageContent.vue'
-import { reactive, ref, computed } from 'vue'
-import useUserStore from '@/store/main/system'
+import { ref, computed } from 'vue'
 import useMainStore from '@/store/main/main'
-import dayFormat from '@/utils/dayformat'
 import searchConfig from './config/searchConfig'
 import contentConfig from './config/contentConfig'
 import formConfig from './config/formConfig'
-import { main } from '@popperjs/core'
-
+import usePageContent from '@/hooks/usePageContent'
+import usePageForm from '@/hooks/usePageForm'
 //数据截取
 const refFormConfig = computed(() => {
   const mainStore = useMainStore()
@@ -51,25 +49,12 @@ const refFormConfig = computed(() => {
   return formConfig
 })
 
-const contentRef = ref<InstanceType<typeof pageContent>>()
-function searchClick(formData: any) {
-  contentRef.value?.newMust(formData)
-}
-function resetClick() {
-  contentRef.value?.newMust()
-}
-
-const son = ref<InstanceType<typeof pageForm>>()
-function createUser() {
-  son.value?.create(false)
-}
+//hooks
+const { contentRef, searchClick, resetClick } = usePageContent()
+const { son, createUser, changeUser } = usePageForm()
 
 function tryNew() {
   contentRef.value?.newMust()
-}
-
-function changeUser(messege: any) {
-  son.value?.create(true, messege)
 }
 </script>
 

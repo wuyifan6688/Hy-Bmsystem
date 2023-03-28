@@ -82,3 +82,17 @@ export function mapName(it: string, arg: any) {
     }
   }
 }
+
+export function mapMenuList(menuList: any[]) {
+  const ids: number[] = []
+  function recurseId(menuList: any[]) {
+    for (const item of menuList) {
+      if (item.children) {
+        recurseId(item.children)
+      } else ids.push(item.id)
+    }
+  }
+  recurseId(menuList)
+
+  return ids
+}

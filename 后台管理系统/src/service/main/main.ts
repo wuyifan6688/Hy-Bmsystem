@@ -10,3 +10,8 @@ export function getDepartment() {
     url: '/department/list'
   })
 }
+export function getMenuList() {
+  return hyRequest.post({
+    url: '/menu/list'
+  })
+}
