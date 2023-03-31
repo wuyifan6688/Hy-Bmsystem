@@ -56,7 +56,6 @@ import { defineEmits, defineProps } from 'vue'
 const emit = defineEmits(['queryClick', 'resetClick'])
 function search() {
   emit('queryClick', formData)
-  console.log(44, formData)
 }
 const formRef = ref()
 function disapper() {

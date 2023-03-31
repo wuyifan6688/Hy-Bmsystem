@@ -11,7 +11,7 @@ const localRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/main/analysis/dashboard',
-    component: () => import('@/views/main/analysis/dashboard.vue')
+    component: () => import('@/views/main/analysis/dashboard/dashboard.vue')
   },
   {
     path: '/main/product/goods',
@@ -95,4 +95,16 @@ export function mapMenuList(menuList: any[]) {
   recurseId(menuList)
 
   return ids
+}
+
+export function mapPermisson(userList: any[]) {
+  const result: any = []
+  function recurseType(userList: any[]) {
+    for (const item of userList) {
+      if (item.type == 3) result.push(item.permission)
+      else recurseType(item.children ?? []) //不一定有chirdren
+    }
+  }
+  recurseType(userList)
+  return result
 }

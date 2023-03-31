@@ -75,7 +75,6 @@ function editCallback(itemData: any) {
   nextTick(() => {
     const menuIds = mapMenuList(itemData.menuList)
     treeRef.value?.setCheckedKeys(menuIds)
-    console.log([menuIds])
   })
 }
 </script>

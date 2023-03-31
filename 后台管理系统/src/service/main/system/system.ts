@@ -74,7 +74,7 @@ export function getPage(
   }
   const data = { offset, size, ...result }
   // ..
-  console.log(66, result)
+
   return hyRequest.post({
     url: `/${name}/list`,
     data
@@ -86,13 +86,11 @@ export function delPage(name: string, id: number) {
   })
 }
 export function changePage(name: string, id: number, change: {}) {
-  console.log({ ...change })
   return hyRequest.patch({
     url: `/${name}/${id}`
   })
 }
 export function createPage(name: string, change: {}) {
-  console.log(change)
   return hyRequest.post({
     url: `/${name}`,
     data: { ...change }

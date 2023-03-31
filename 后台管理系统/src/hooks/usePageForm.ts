@@ -6,7 +6,7 @@ function usePageForm(editCallback?: any) {
     son.value?.create(false)
   }
   function changeUser(messege: any) {
-    editCallback(messege)
+    if (editCallback) editCallback(messege)
     son.value?.create(true, messege)
 
     if (messege) console.log(messege)

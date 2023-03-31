@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { IAccount } from '@/types'
-import { mapMenuRoutes } from '@/utils/map-menu'
+import { mapMenuRoutes, mapPermisson } from '@/utils/map-menu'
 import useMainStore from '../main/main'
 import {
   accountLoginRequest,
@@ -17,6 +17,7 @@ interface LoginState {
   token: any
   userInfo: any
   userMenu: any
+  permission: any
 }
 const useLoginStore = defineStore('login', {
   state: (): LoginState => ({
@@ -24,7 +25,8 @@ const useLoginStore = defineStore('login', {
     password: localCache.getCache('password'),
     token: localCache.getCache(LOGIN_TOKEN) ?? '',
     userInfo: localCache.getCache('userInfo') ?? '',
-    userMenu: localCache.getCache('userMenu') ?? ''
+    userMenu: localCache.getCache('userMenu') ?? '',
+    permission: []
   }),
   actions: {
     async loginAccountAction(account: IAccount) {
@@ -46,6 +48,9 @@ const useLoginStore = defineStore('login', {
         router.addRoute('main', item)
       })
 
+      //导入权限
+      this.permission = mapPermisson(this.userMenu)
+
       localCache.setCache('userInfo', this.userInfo)
       localCache.setCache('userMenu', this.userMenu)
 
@@ -62,6 +67,7 @@ const useLoginStore = defineStore('login', {
       const mainStore = useMainStore()
       mainStore.togetRoleList()
       mainStore.togetDepartment()
+      this.permission = mapPermisson(this.userMenu)
 
       let routes = []
       routes = mapMenuRoutes(this.userMenu)

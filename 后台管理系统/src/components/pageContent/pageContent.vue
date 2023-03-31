@@ -1,11 +1,14 @@
 <template>
-  <div class="userContent">
+  <div class="userContent" v-if="searchPermisson">
     <div class="body">
       <div class="head">
         <h2>{{ props.contentConfig.header.title }}</h2>
-        <el-button type="primary" @click="handleCreate">{{
-          props.contentConfig.header.btnTitle
-        }}</el-button>
+        <el-button
+          type="primary"
+          @click="handleCreate"
+          v-if="createPermisson"
+          >{{ props.contentConfig.header.btnTitle }}</el-button
+        >
       </div>
       <div class="content">
         <el-table :data="list" style="width: 100%" border>
@@ -33,9 +36,11 @@
                 :type="item.type"
                 :width="item.width"
                 :label="item.label"
+                v-if="!(!changePermisson && !deletePermisson)"
               >
                 <template #default="scope">
                   <el-button
+                    v-if="changePermisson"
                     size="small"
                     icon="Edit"
                     text
@@ -44,6 +49,7 @@
                     >编辑</el-button
                   >
                   <el-button
+                    v-if="deletePermisson"
                     size="small"
                     type="danger"
                     icon="Delete"
@@ -105,6 +111,7 @@ import { ref, computed } from 'vue'
 import useUserStore from '@/store/main/system'
 import dayFormat from '@/utils/dayformat'
 import { defineExpose, defineEmits, defineProps } from 'vue'
+import useLoginStore from '@/store/login/login'
 
 defineExpose({ newMust })
 
@@ -115,7 +122,6 @@ function newMust(formData: any = {}) {
     pageSize.value,
     formData
   )
-  console.log(22, formData)
 }
 let currentPage = ref(1)
 let pageSize = ref(10)
@@ -178,6 +184,33 @@ function handleSizeChange() {
     pageSize.value
   )
 }
+
+const loginStore = useLoginStore()
+console.log(loginStore.permission)
+let createPermisson = computed(() => {
+  for (let item of loginStore.permission) {
+    if (item == `system:${props.contentConfig.pageName}:create`) return true
+  }
+  return false
+})
+let deletePermisson = computed(() => {
+  for (let item of loginStore.permission) {
+    if (item == `system:${props.contentConfig.pageName}:delete`) return true
+  }
+  return false
+})
+let changePermisson = computed(() => {
+  for (let item of loginStore.permission) {
+    if (item == `system:${props.contentConfig.pageName}:update`) return true
+  }
+  return false
+})
+let searchPermisson = computed(() => {
+  for (let item of loginStore.permission) {
+    if (item == `system:${props.contentConfig.pageName}:query`) return true
+  }
+  return false
+})
 </script>
 
 <style lang="less" scoped>
